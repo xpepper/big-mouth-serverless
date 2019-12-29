@@ -7,3 +7,7 @@ provider:
 functions:
   get-index:
     handler: functions/get-index.handler
+    events:
+      - http:
+          path: /
+          method: get
