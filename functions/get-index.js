@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
 const co = require("co")
 const Promise = require("bluebird")
 const fs = Promise.promisifyAll(require("fs"))
 
-var html;
+var html
 
 function* loadHtml() {
   if (!html)  {
@@ -24,4 +24,4 @@ module.exports.handler = co.wrap(function* (event, context, callback) {
   }
 
   callback(null, response)
- })
+})
