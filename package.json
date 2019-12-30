@@ -13,6 +13,7 @@
         "co": "^4.6.0"
     },
     "devDependencies": {
-        "aws-sdk": "^2.596.0"
+        "aws-sdk": "^2.596.0",
+        "serverless-pseudo-parameters": "^2.5.0"
     }
 }

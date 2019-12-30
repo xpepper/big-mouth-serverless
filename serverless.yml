@@ -1,5 +1,8 @@
 service: big-mouth
 
+plugins:
+  - serverless-pseudo-parameters
+
 provider:
   name: aws
   runtime: nodejs12.x
@@ -7,7 +10,7 @@ provider:
   iamRoleStatements:
     - Effect: 'Allow'
       Action: dynamodb:scan
-      Resource: arn:aws:dynamodb:eu-west-1:684411073013:table/restaurants
+      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/restaurants
 
 functions:
   get-index:
