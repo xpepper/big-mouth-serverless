@@ -4,20 +4,23 @@ const co = require("co")
 const Promise = require("bluebird")
 const fs = Promise.promisifyAll(require("fs"))
 const Mustache = require("mustache")
+const http = require("superagent-promise")(require("superagent"), Promise)
+
+const restaurantsApiRoot = process.env.restaurants_api
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 var html
 
-function* getRestaurants() {
-  return []
-}
-
 function* loadHtml() {
-  if (!html)  {
+  if (!html) {
     html = yield fs.readFileAsync('static/index.html', 'UTF-8')
   }
 
   return html
+}
+
+function* getRestaurants() {
+  return (yield http.get(restaurantsApiRoot)).body
 }
 
 module.exports.handler = co.wrap(function* (event, context, callback) {
