@@ -1,4 +1,4 @@
-service: big-mouth
+service: big-mouth-ganzodigomma
 
 plugins:
   - serverless-pseudo-parameters
@@ -10,7 +10,7 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action: dynamodb:scan
-      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/restaurants
+      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/restaurants_ganzodigomma
     - Effect: Allow
       Action: execute-api:Invoke
       Resource: arn:aws:execute-api:#{AWS::Region}:#{AWS::AccountId}:*/*/GET/restaurants
@@ -23,7 +23,7 @@ functions:
           path: /
           method: get
     environment:
-      restaurants_api: https://02asm59ou3.execute-api.eu-west-1.amazonaws.com/dev/restaurants
+      restaurants_api: https://oo613s6jt2.execute-api.eu-west-1.amazonaws.com/dev/restaurants
 
   get-restaurants:
     handler: functions/get-restaurants.handler
@@ -33,14 +33,14 @@ functions:
           method: get
           authorizer: aws_iam
     environment:
-      restaurants_table: restaurants
+      restaurants_table: restaurants_ganzodigomma
 
 resources:
   Resources:
     restaurantsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: restaurants
+        TableName: restaurants_ganzodigomma
         AttributeDefinitions:
           - AttributeName: name
             AttributeType: S

@@ -56,7 +56,7 @@ let putReqs = restaurants.map(x => ({
 
 let req = {
   RequestItems: {
-    'restaurants': putReqs
+    'restaurants_ganzodigomma': putReqs
   }
 };
 dynamodb.batchWrite(req).promise().then(() => console.log("all done"));
