@@ -7,6 +7,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: eu-west-1
+  memorySize: 128
   iamRoleStatements:
     - Effect: Allow
       Action: dynamodb:scan
@@ -32,6 +33,17 @@ functions:
           path: /restaurants
           method: get
           authorizer: aws_iam
+    environment:
+      restaurants_table: restaurants_ganzodigomma
+
+  search-restaurants:
+    handler: functions/search-restaurants.handler
+    events:
+      - http:
+          path: /restaurants/search
+          method: post
+          authorizer:
+            arn: arn:aws:cognito-idp:us-east-1:684411073013:userpool/us-east-1_axnKRpWmm
     environment:
       restaurants_table: restaurants_ganzodigomma
 
