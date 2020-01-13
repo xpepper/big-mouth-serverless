@@ -4,7 +4,7 @@
     "description": "serverless demo app by Yan Cui",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "integration-test": "./node_modules/.bin/mocha tests/test_cases --reporter spec"
     },
     "author": "",
     "license": "ISC",
@@ -18,6 +18,9 @@
     },
     "devDependencies": {
         "aws-sdk": "^2.596.0",
+        "chai": "^4.2.0",
+        "lodash": "^4.17.15",
+        "mocha": "^7.0.0",
         "serverless-pseudo-parameters": "^2.5.0"
     }
 }
