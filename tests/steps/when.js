@@ -13,10 +13,10 @@ let we_invoke_get_index = function () {
         reject(err)
       } else {
         let contentType = _.get(response, 'headers.Content-Type', 'application/json')
-        if (response.body && contentType === 'application/json') { 
+        if (response.body && contentType === 'application/json') {
           response.body = JSON.parse(response.body)
         }
-        
+
         resolve(response)
       }
     }
