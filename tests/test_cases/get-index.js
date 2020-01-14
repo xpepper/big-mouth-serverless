@@ -15,7 +15,7 @@ describe(`When we invoke the GET / endpoint`, co.wrap(function* () {
     let response = yield when.we_invoke_get_index()
 
     expect(response.statusCode).to.equal(200)
-    expect(response.headers['Content-Type']).to.equal('text/html; charset=UTF-8')
+    expect(response.headers['content-type']).to.equal('text/html; charset=UTF-8')
     expect(response.body).to.not.be.null
 
     let $ = cheerio.load(response.body)
