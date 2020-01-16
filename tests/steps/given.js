@@ -37,7 +37,7 @@ let an_authenticated_user = function* () {
   console.log(`[${username}] - user is created`)
 
   let req = {
-    AuthFlow: 'ADMIN_NO_SRP_AUTH',
+    AuthFlow: 'ADMIN_USER_PASSWORD_AUTH',
     UserPoolId: userpoolId,
     ClientId: clientId,
     AuthParameters: {
