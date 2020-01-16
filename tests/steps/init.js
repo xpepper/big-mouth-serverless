@@ -11,7 +11,7 @@ let init = co.wrap(function* () {
     return
   }
 
-  process.env.restaurants_api = "https://oo613s6jt2.execute-api.eu-west-1.amazonaws.com/dev/restaurants"
+  process.env.restaurants_api = "https://ehjijmyk9g.execute-api.eu-west-1.amazonaws.com/dev/restaurants"
   process.env.restaurants_table = "restaurants_ganzodigomma"
   process.env.AWS_REGION = "eu-west-1"
   process.env.cognito_client_id = "test_cognito_client_id" 
