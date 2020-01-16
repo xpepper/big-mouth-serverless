@@ -4,7 +4,8 @@
     "description": "serverless demo app by Yan Cui",
     "main": "index.js",
     "scripts": {
-        "integration-test": "env TEST_MODE=handler ./node_modules/.bin/mocha tests/test_cases --reporter spec --timeout 5000"
+        "integration-test": "env TEST_MODE=handler ./node_modules/.bin/mocha tests/test_cases --reporter spec --timeout 5000",
+        "acceptance-test": "env TEST_MODE=http TEST_ROOT=https://ehjijmyk9g.execute-api.eu-west-1.amazonaws.com/dev ./node_modules/.bin/mocha tests/test_cases --reporter spec --timeout 5000"
     },
     "author": "",
     "license": "ISC",
@@ -17,9 +18,10 @@
         "superagent-promise": "^1.1.0"
     },
     "devDependencies": {
-        "aws-sdk": "^2.596.0",
+        "aws-sdk": "^2.603.0",
         "awscred": "^1.5.0",
         "chai": "^4.2.0",
+        "chance": "^1.1.4",
         "cheerio": "^1.0.0-rc.3",
         "lodash": "^4.17.15",
         "mocha": "^7.0.0",

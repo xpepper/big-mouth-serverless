@@ -15,7 +15,8 @@ let init = co.wrap(function* () {
   process.env.restaurants_table = "restaurants_ganzodigomma"
   process.env.AWS_REGION = "eu-west-1"
   process.env.cognito_client_id = "test_cognito_client_id" 
-  process.env.cognito_user_pool_id = "test_cognito_user_pool_id"
+  process.env.cognito_user_pool_id = "eu-west-1_tdRNBHtxD"
+  process.env.cognito_server_client_id = "7r175s1eoa9qmmiuni15rrfjkv"
 
   let awsCredentials = (yield awscred.loadAsync()).credentials
 
