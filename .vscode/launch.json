@@ -17,8 +17,28 @@
         "local",
         "-f",
         "get-restaurants",
-        "-d",
+        "--data",
         "{}"
+      ],
+      "env": {
+        "restaurants-table": "restaurants-ganzodigomma"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "search-restaurants",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/node_modules/.bin/sls",
+      "args": [
+        "invoke",
+        "local",
+        "-f",
+        "search-restaurants",
+        "--path",
+        "examples/search-restaurants.json"
       ],
       "env": {
         "restaurants-table": "restaurants-ganzodigomma"
