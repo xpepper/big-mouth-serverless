@@ -43,6 +43,28 @@
       "env": {
         "restaurants-table": "restaurants-ganzodigomma"
       }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "get-index",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/node_modules/.bin/sls",
+      "args": [
+        "invoke",
+        "local",
+        "-f",
+        "get-index",
+        "--data",
+        "{}"
+      ],
+      "env": {
+        "restaurants_api": "https://ehjijmyk9g.execute-api.eu-west-1.amazonaws.com/dev/restaurants",
+        "cognito_user_pool_id": "eu-west-1_tdRNBHtxD",
+        "cognito_client_id": "7vdd3dignjjfc5fu44npri6glq"
+      }
     }
   ]
 }
