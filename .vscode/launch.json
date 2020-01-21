@@ -65,6 +65,17 @@
         "cognito_user_pool_id": "eu-west-1_tdRNBHtxD",
         "cognito_client_id": "7vdd3dignjjfc5fu44npri6glq"
       }
+    },
+    {
+      "name": "Attach to SAM CLI",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 5858,
+      "localRoot": "${workspaceRoot}",
+      "remoteRoot": "/var/task",
+      "protocol": "inspector",
+      "stopOnEntry": false
     }
   ]
 }
