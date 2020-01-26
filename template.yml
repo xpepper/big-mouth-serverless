@@ -1,0 +1,197 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: 'SAM template for Serverless framework service: '
+Resources:
+  restaurantsTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: restaurants_ganzodigomma
+      AttributeDefinitions:
+        - AttributeName: name
+          AttributeType: S
+      KeySchema:
+        - AttributeName: name
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  BigMouthGanzodigommaDevGetIndex:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: functions/get-index.handler
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 3
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action: 'dynamodb:scan'
+              Resource: >-
+                arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/restaurants_ganzodigomma
+            - Effect: Allow
+              Action: 'execute-api:Invoke'
+              Resource: >-
+                arn:aws:execute-api:#{AWS::Region}:#{AWS::AccountId}:*/*/GET/restaurants
+      Environment:
+        Variables:
+          restaurants_api: >-
+            https://ehjijmyk9g.execute-api.eu-west-1.amazonaws.com/dev/restaurants
+          cognito_user_pool_id: eu-west-1_tdRNBHtxD
+          cognito_client_id: 7vdd3dignjjfc5fu44npri6glq
+      Events:
+        Event1:
+          Type: Api
+          Properties:
+            Path: /
+            Method: get
+            RestApiId:
+              Ref: BigMouthGanzodigomma
+  BigMouthGanzodigomma:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      StageName: dev
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          title:
+            Ref: 'AWS::StackName'
+        paths:
+          /:
+            get:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BigMouthGanzodigommaDevGetIndex.Arn}/invocations
+              responses: {}
+          /restaurants:
+            get:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BigMouthGanzodigommaDevGetRestaurants.Arn}/invocations
+              responses: {}
+              security:
+                - Aws_iam: []
+          /restaurants/search:
+            post:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BigMouthGanzodigommaDevSearchRestaurants.Arn}/invocations
+              responses: {}
+        securityDefinitions:
+          Aws_iam:
+            type: apiKey
+            name: Aws_iam
+            in: header
+            x-amazon-apigateway-authtype: oauth2
+            x-amazon-apigateway-authorizer:
+              type: token
+              authorizerUri:
+                'Fn::Sub': >-
+                  arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${Aws_iam.Arn}/invocations
+              identityValidationExpression: '^x-[a-z]+'
+              authorizerResultTtlInSeconds: 60
+  BigMouthGanzodigommaDevGetIndexLambdaPermission:
+    Type: 'AWS::Lambda::Permission'
+    DependsOn:
+      - BigMouthGanzodigommaDevGetIndex
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName:
+        Ref: BigMouthGanzodigommaDevGetIndex
+      Principal: apigateway.amazonaws.com
+  BigMouthGanzodigommaDevGetRestaurants:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: functions/get-restaurants.handler
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 3
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action: 'dynamodb:scan'
+              Resource: >-
+                arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/restaurants_ganzodigomma
+            - Effect: Allow
+              Action: 'execute-api:Invoke'
+              Resource: >-
+                arn:aws:execute-api:#{AWS::Region}:#{AWS::AccountId}:*/*/GET/restaurants
+      Environment:
+        Variables:
+          restaurants_table: restaurants_ganzodigomma
+      Events:
+        Event1:
+          Type: Api
+          Properties:
+            Path: /restaurants
+            Method: get
+            RestApiId:
+              Ref: BigMouthGanzodigomma
+  Aws_iamResourcePolicy:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName:
+        'Fn::GetAtt':
+          - Aws_iam
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceAccount:
+        Ref: 'AWS::AccountId'
+  BigMouthGanzodigommaDevGetRestaurantsLambdaPermission:
+    Type: 'AWS::Lambda::Permission'
+    DependsOn:
+      - BigMouthGanzodigommaDevGetRestaurants
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName:
+        Ref: BigMouthGanzodigommaDevGetRestaurants
+      Principal: apigateway.amazonaws.com
+  BigMouthGanzodigommaDevSearchRestaurants:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: functions/search-restaurants.handler
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 3
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action: 'dynamodb:scan'
+              Resource: >-
+                arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/restaurants_ganzodigomma
+            - Effect: Allow
+              Action: 'execute-api:Invoke'
+              Resource: >-
+                arn:aws:execute-api:#{AWS::Region}:#{AWS::AccountId}:*/*/GET/restaurants
+      Environment:
+        Variables:
+          restaurants_table: restaurants_ganzodigomma
+      Events:
+        Event1:
+          Type: Api
+          Properties:
+            Path: /restaurants/search
+            Method: post
+            RestApiId:
+              Ref: BigMouthGanzodigomma
+  BigMouthGanzodigommaDevSearchRestaurantsLambdaPermission:
+    Type: 'AWS::Lambda::Permission'
+    DependsOn:
+      - BigMouthGanzodigommaDevSearchRestaurants
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName:
+        Ref: BigMouthGanzodigommaDevSearchRestaurants
+      Principal: apigateway.amazonaws.com
