@@ -18,12 +18,12 @@ let init = co.wrap(function* () {
   process.env.cognito_user_pool_id = "eu-west-1_tdRNBHtxD"
   process.env.cognito_server_client_id = "7r175s1eoa9qmmiuni15rrfjkv"
 
-  let awsCredentials = (yield awscred.loadAsync()).credentials
+  if (!process.env.AWS_ACCESS_KEY_ID) {
+    let awsCredentials = (yield awscred.loadAsync()).credentials
 
-  process.env.AWS_ACCESS_KEY_ID = awsCredentials.accessKeyId
-  process.env.AWS_SECRET_ACCESS_KEY = awsCredentials.secretAccessKey
-
-  console.log("AWS credentials loaded")
+    process.env.AWS_ACCESS_KEY_ID = awsCredentials.accessKeyId
+    process.env.AWS_SECRET_ACCESS_KEY = awsCredentials.secretAccessKey
+  }
 
   initialized = true
 })
