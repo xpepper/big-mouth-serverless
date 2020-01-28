@@ -38,6 +38,10 @@ function* getRestaurants() {
 
     process.env.AWS_ACCESS_KEY_ID = awsCredentials.accessKeyId
     process.env.AWS_SECRET_ACCESS_KEY = awsCredentials.secretAccessKey
+
+    if (awsCredentials.sessionToken) {
+      process.env.AWS_SESSION_TOKEN = awsCredentials.sessionToken
+    }
   }
 
   aws4.sign(opts)
