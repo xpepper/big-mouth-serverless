@@ -2,8 +2,7 @@
 set -e
 set -o pipefail
 
-instruction()
-{
+instruction() {
   echo "usage: ./build.sh deploy <env>"
   echo ""
   echo "env: eg. int, staging, prod, ..."
@@ -27,6 +26,11 @@ elif [ "$1" = "deploy" ] && [ $# -eq 2 ]; then
 
   npm install
   'node_modules/.bin/sls' deploy -s $STAGE
+elif [ "$1" = "all" ] && [ $# -eq 1 ]; then
+  npm install
+  npm run integration-test
+  'node_modules/.bin/sls' deploy -s dev
+  npm run acceptance-test
 else
   instruction
   exit 1
