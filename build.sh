@@ -6,7 +6,6 @@ instruction() {
   echo "usage: ./build.sh deploy <env>"
   echo ""
   echo "env: eg. int, staging, prod, ..."
-  echo ""
   echo "for example: ./deploy.sh int"
 }
 
