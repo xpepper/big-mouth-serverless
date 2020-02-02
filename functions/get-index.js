@@ -7,7 +7,6 @@ const Mustache = require("mustache")
 const http = require("superagent-promise")(require("superagent"), Promise)
 const aws4 = require("aws4")
 const URL = require("url")
-const awscred = Promise.promisifyAll(require('awscred'))
 
 const awsRegion = process.env.AWS_REGION
 const cognitoUserPoolId = process.env.cognito_user_pool_id
@@ -22,17 +21,12 @@ function* loadHtml() {
   if (!html) {
     html = yield fs.readFileAsync('static/index.html', 'UTF-8')
   }
-
+  
   return html
 }
 
-function* getRestaurants() {
-  let url = URL.parse(restaurantsApiRoot)
-  let opts = {
-    host: url.hostname,
-    path: url.pathname
-  }
-
+function* loadCredentials() {
+  const awscred = Promise.promisifyAll(require('awscred'))
   if (!process.env.AWS_ACCESS_KEY_ID) {
     let awsCredentials = (yield awscred.loadAsync()).credentials
 
@@ -43,7 +37,16 @@ function* getRestaurants() {
       process.env.AWS_SESSION_TOKEN = awsCredentials.sessionToken
     }
   }
+}
 
+function* getRestaurants() {
+  let url = URL.parse(restaurantsApiRoot)
+  let opts = {
+    host: url.hostname,
+    path: url.pathname
+  }
+
+  yield loadCredentials()
   aws4.sign(opts)
 
   let httpRequest = http
